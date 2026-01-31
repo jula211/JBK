@@ -4,302 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Кондратюк Юлия — Video Editor</title>
-  <meta name="description" content="Режиссёр монтажа / Video Editor. Реклама, имидж, digital, клипы, новости и репортаж. Цвет, звук, графика, многокамерный монтаж." />
-
-  <style>
-    :root{
-      --bg:#070913;
-      --bg2:#0b1022;
-      --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.68);
-      --a:#7c5cff;
-      --b:#00e5ff;
-      --c:#ff3d88;
-      --shadow: 0 18px 70px rgba(0,0,0,.55);
-      --r:22px;
-      --max:1120px;
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(900px 600px at 15% 10%, rgba(124,92,255,.22), transparent 60%),
-        radial-gradient(900px 600px at 85% 18%, rgba(0,229,255,.18), transparent 60%),
-        radial-gradient(1000px 700px at 40% 95%, rgba(255,61,136,.11), transparent 55%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
-      overflow-x:hidden;
-    }
-    a{color:inherit; text-decoration:none}
-    img{max-width:100%; display:block}
-    .container{ width:min(var(--max), calc(100% - 40px)); margin:0 auto; }
-
-    /* topbar */
-    .topbar{
-      position:sticky; top:0; z-index:50;
-      backdrop-filter: blur(14px);
-      background: rgba(8,10,18,.62);
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
-    .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 0; gap:14px; flex-wrap:wrap;
-    }
-
-    .brand{ display:flex; align-items:center; gap:12px; }
-    .brand .mark{
-      width:38px; height:38px; border-radius:12px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 45%),
-        linear-gradient(135deg, var(--a), var(--b));
-      box-shadow: 0 10px 30px rgba(124,92,255,.22);
-      position:relative; overflow:hidden;
-      flex:0 0 auto;
-    }
-    .brand .mark::after{
-      content:""; position:absolute; inset:-30%;
-      background: linear-gradient(120deg, transparent, rgba(255,255,255,.22), transparent);
-      transform: rotate(25deg);
-      animation: sheen 4.2s linear infinite;
-    }
-    @keyframes sheen{
-      0%{ transform: translateX(-40%) rotate(25deg); opacity:0;}
-      20%{opacity:.9}
-      45%{opacity:0}
-      100%{ transform: translateX(140%) rotate(25deg); opacity:0;}
-    }
-    .brand .text{ line-height:1.05; }
-    .brand .text b{ display:block; letter-spacing:.2px; font-size:14px; }
-    .brand .text span{ font-size:12px; color:var(--muted); }
-
-    .menu{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-    .menu a{
-      padding:10px 12px; border-radius:14px;
-      border:1px solid transparent; color:var(--muted);
-      transition:.18s ease;
-    }
-    .menu a:hover{
-      color:var(--text);
-      border-color:rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-    }
-    .menu a.active{
-      color:var(--text);
-      border-color: rgba(124,92,255,.42);
-      background: rgba(124,92,255,.08);
-    }
-
-    .cta{ display:flex; gap:10px; flex-wrap:wrap; }
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      padding:10px 14px; border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.04);
-      color:var(--text);
-      cursor:pointer;
-      transition:.18s ease;
-      white-space:nowrap;
-    }
-    .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.06); }
-    .btn.primary{
-      border-color: rgba(0,229,255,.35);
-      background:
-        radial-gradient(circle at 30% 20%, rgba(255,255,255,.14), transparent 45%),
-        linear-gradient(135deg, rgba(124,92,255,.65), rgba(0,229,255,.55));
-      box-shadow: 0 18px 60px rgba(0,229,255,.10);
-    }
-
-    /* blob */
-    .blob{
-      position: fixed;
-      width: 280px; height: 280px;
-      border-radius: 999px;
-      pointer-events: none;
-      z-index: 0;
-      background: radial-gradient(circle at 30% 30%, rgba(0,229,255,.12), transparent 55%),
-                radial-gradient(circle at 70% 60%, rgba(124,92,255,.16), transparent 60%),
-                radial-gradient(circle at 40% 80%, rgba(255,61,136,.10), transparent 55%);
-      filter: blur(22px);
-      opacity: .9;
-      transform: translate(-50%, -50%);
-      transition: transform .06s linear;
-    }
-
-    .card{
-      border-radius: var(--r);
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
-    }
-    .card::before{
-      content:"";
-      position:absolute; inset:-1px;
-      background: radial-gradient(700px 220px at 20% 0%, rgba(0,229,255,.10), transparent 60%);
-      pointer-events:none;
-    }
-
-    /* layout */
-    main{ position:relative; z-index:1; }
-    .section{ padding: 26px 0; scroll-margin-top: 92px; }
-    .hero{ padding:56px 0 10px; }
-    .grid{ display:grid; grid-template-columns: 1.15fr .85fr; gap:18px; align-items:stretch; }
-    @media (max-width:980px){ .grid{grid-template-columns:1fr} }
-
-    .hero-card{ padding:26px; }
-    .kicker{
-      display:inline-flex; align-items:center; gap:10px;
-      color:var(--muted); font-size:13px;
-      padding:8px 12px; border-radius:999px;
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
-    }
-    .kicker i{
-      width:8px; height:8px; border-radius:99px;
-      background: linear-gradient(135deg, var(--c), var(--b));
-      box-shadow: 0 0 18px rgba(255,61,136,.45);
-    }
-    h1{
-      margin:14px 0 10px;
-      font-size: clamp(30px, 3.3vw, 46px);
-      letter-spacing: -.6px;
-      line-height:1.05;
-    }
-    .sub{
-      margin:0 0 18px;
-      color:var(--muted);
-      font-size:16px;
-      line-height:1.55;
-      max-width: 68ch;
-    }
-    .pills{ display:flex; flex-wrap:wrap; gap:8px; margin: 14px 0 18px; }
-    .pill{
-      padding:8px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: rgba(255,255,255,.76);
-      font-size:13px;
-    }
-    .hero-actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 10px; }
-
-    .side-card{ padding:18px; display:flex; flex-direction:column; gap:12px; }
-    .cover{
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.12);
-      overflow:hidden;
-      min-height: 210px;
-      background: #0a0c10;
-      position:relative;
-    }
-    .cover .fakeimg{
-      height:100%;
-      min-height:210px;
-      background:
-        radial-gradient(120px 120px at 30% 25%, rgba(255,255,255,.12), transparent 60%),
-        radial-gradient(260px 180px at 80% 20%, rgba(0,229,255,.14), transparent 60%),
-        radial-gradient(320px 220px at 55% 80%, rgba(124,92,255,.18), transparent 60%),
-        linear-gradient(135deg, rgba(255,61,136,.08), rgba(0,229,255,.06));
-      filter: contrast(1.05) saturate(1.15);
-    }
-    .cover::after{
-      content:""; position:absolute; inset:0;
-      background: linear-gradient(180deg, rgba(10,12,16,.05), rgba(10,12,16,.78));
-    }
-
-    .mini{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-    .tile{
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      padding:12px;
-    }
-    .tile b{ display:block; font-size:14px; }
-    .tile span{ color:var(--muted); font-size:12px; }
-
-    .h2{ margin:0 0 12px; font-size: 20px; letter-spacing: -.2px; }
-    .muted{ color:var(--muted); }
-
-    .split{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
-    @media (max-width:980px){ .split{grid-template-columns:1fr} }
-
-    .list{ display:flex; flex-direction:column; gap:10px; }
-    .item{
-      padding:14px;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-    }
-    .item .top{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
-    .badge{
-      padding:6px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      color: rgba(255,255,255,.78);
-      font-size:12px;
-      flex:0 0 auto;
-    }
-
-    .cards{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
-    @media (max-width:980px){ .cards{grid-template-columns:1fr} }
-
-    .work{ padding:0; overflow:hidden; }
-    .work .thumb{
-      height:160px;
-      background:
-        radial-gradient(220px 140px at 30% 30%, rgba(0,229,255,.12), transparent 60%),
-        radial-gradient(260px 180px at 70% 50%, rgba(124,92,255,.16), transparent 60%),
-        linear-gradient(135deg, rgba(255,61,136,.06), rgba(255,255,255,.02));
-      border-bottom:1px solid rgba(255,255,255,.10);
-    }
-    .work .body{ padding:14px; }
-    .work .body b{ display:block; margin-bottom:6px; }
-    .work .body p{ margin:0; color:var(--muted); font-size:13px; line-height:1.5; }
-    .work .meta{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
-
-    /* form */
-    form{margin:0}
-    .form{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    @media (max-width:760px){ .form{grid-template-columns:1fr} }
-    .field{ display:flex; flex-direction:column; gap:8px; }
-    .field label{ font-size:12px; color:var(--muted); }
-    .field input, .field textarea{
-      padding:12px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(10,12,16,.35);
-      color: var(--text);
-      outline:none;
-    }
-    .field textarea{ min-height: 130px; grid-column: 1 / -1; resize: vertical; }
-    .note{ font-size:12px; color:var(--muted); margin-top:8px; }
-
-    /* footer */
-    .footer{ padding: 26px 0 44px; color: var(--muted); font-size: 12px; }
-    .footer .row{
-      display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
-      border-top: 1px solid rgba(255,255,255,.08); padding-top: 16px;
-    }
-    .footer a{ color:rgba(255,255,255,.75); }
-    .footer a:hover{ color:var(--text); }
-
-    /* small helpers */
-    ul.clean{ margin:10px 0 0; padding-left:18px; line-height:1.6; color:var(--muted); }
-    .nowrap{white-space:nowrap}
-  </style>
+  <meta name="description" content="Режиссёр монтажа / Video Editor. Реклама, имидж, digital, клипы, новости и репортаж." />
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-
 <body>
   <div class="blob"></div>
+  <div class="grain"></div>
 
   <header class="topbar">
     <div class="container nav">
-      <a class="brand" href="#home">
+      <a class="brand" href="index.html">
         <span class="mark"></span>
         <span class="text">
           <b>Кондратюк Юлия</b>
@@ -308,31 +22,34 @@
       </a>
 
       <nav class="menu">
-        <a href="#home" data-link="home">Главная</a>
-        <a href="#portfolio" data-link="portfolio">Портфолио</a>
-        <a href="#experience" data-link="experience">Опыт</a>
-        <a href="#about" data-link="about">Обо мне</a>
-        <a href="#contact" data-link="contact">Контакты</a>
+        <a href="index.html">Главная</a>
+        <a href="portfolio.html">Портфолио</a>
+        <a href="experience.html">Опыт</a>
+        <a href="about.html">Обо мне</a>
+        <a href="contact.html">Контакты</a>
       </nav>
 
       <div class="cta">
-        <a class="btn" href="#portfolio">Смотреть работы</a>
-        <a class="btn primary" href="#contact">Связаться</a>
+        <a class="btn" href="portfolio.html">Смотреть работы</a>
+        <a class="btn primary" href="contact.html">Связаться</a>
       </div>
     </div>
   </header>
 
   <main class="container">
-    <!-- HOME -->
-    <section id="home" class="hero section">
+    <section class="hero">
       <div class="grid">
         <div class="card hero-card">
           <div class="kicker"><i></i> Production / Agency • быстрый цикл • чистый финал</div>
-          <h1>Режиссёр монтажа / Video Editor<br/>для рекламы, имиджа и digital</h1>
+
+          <h1>
+            <span class="glitch" data-text="Режиссёр монтажа / Video Editor">Режиссёр монтажа / Video Editor</span><br/>
+            для рекламы, имиджа и digital
+          </h1>
 
           <p class="sub">
-            Режиссёр монтажа с 7+ лет опыта в продакшене, агентствах и телевидении.
-            Рекламные, имиджевые, клиповые и digital-ролики, а также новостной и репортажный контент.
+            7+ лет опыта в продакшене, агентствах и телевидении.
+            Рекламные, имиджевые, клиповые и digital-ролики, а также новостной/репортажный контент.
             Цвет, звук, графика, многокамерный монтаж. Комфортно работаю в сжатых сроках и большом объёме правок.
           </p>
 
@@ -340,22 +57,27 @@
             <span class="pill">Реклама / Digital</span>
             <span class="pill">Многокамерный монтаж</span>
             <span class="pill">Цвет + звук</span>
-            <span class="pill">Графика / инфографика</span>
-            <span class="pill">YouTube-форматы</span>
-            <span class="pill">Дедлайны / правки</span>
+            <span class="pill">Motion / инфографика</span>
+            <span class="pill">Эфирные дедлайны</span>
+            <span class="pill">Правки / согласования</span>
           </div>
 
           <div class="hero-actions">
-            <a class="btn primary" href="#portfolio">▶ Портфолио</a>
-            <a class="btn" href="#experience">Опыт</a>
-            <a class="btn" href="#contact">Контакты</a>
+            <a class="btn primary" href="portfolio.html">▶ Портфолио</a>
+            <a class="btn" href="experience.html">Опыт</a>
+            <a class="btn" href="about.html">Обо мне</a>
           </div>
         </div>
 
         <aside class="card side-card">
           <div class="cover">
-            <!-- если нет картинки — оставляем “креативную заглушку” -->
-            <div class="fakeimg" aria-label="cover placeholder"></div>
+            <img src="assets/img/cover.jpg" alt="cover" />
+            <div class="stamp">
+              <div>
+                <b>Focus</b>
+                <span>ad / brand / digital</span>
+              </div>
+            </div>
           </div>
 
           <div class="mini">
@@ -379,179 +101,28 @@
       </div>
     </section>
 
-    <!-- PORTFOLIO -->
-    <section id="portfolio" class="section">
-      <h2 class="h2">Портфолио</h2>
-      <p class="muted">
-        Витрина ниже — для презентации HR. Полное портфолио: Яндекс.Диск.
-        Если дашь 6–12 прямых ссылок на лучшие ролики — вставлю кликабельные карточки.
-      </p>
-
-      <div class="card" style="padding:18px; margin-top:12px">
-        <div class="item" style="margin:0">
-          <div class="top">
-            <b>Папка с работами</b>
-            <span class="badge">откроется в новом окне</span>
-          </div>
-          <div class="muted" style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap">
-            <a class="btn primary" href="https://disk.yandex.ru/d/bKxBhLYBASdtug" target="_blank" rel="noreferrer">Открыть</a>
-            <button class="btn" data-copy="https://disk.yandex.ru/d/bKxBhLYBASdtug">Скопировать ссылку</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="cards" style="margin-top:12px">
-        <article class="card work">
-          <div class="thumb"></div>
-          <div class="body">
-            <b>Рекламный / digital ролик</b>
-            <p>Монтаж под задачу, темп, финализация под платформы.</p>
-            <div class="meta">
-              <span class="badge">ad</span><span class="badge">color</span><span class="badge">deliverables</span>
-            </div>
-          </div>
-        </article>
-        <article class="card work">
-          <div class="thumb"></div>
-          <div class="body">
-            <b>Имиджевый ролик</b>
-            <p>Структура, звук, титры/графика, финальный рендер.</p>
-            <div class="meta">
-              <span class="badge">brand</span><span class="badge">titles</span><span class="badge">sound</span>
-            </div>
-          </div>
-        </article>
-        <article class="card work">
-          <div class="thumb"></div>
-          <div class="body">
-            <b>Многокамерный монтаж</b>
-            <p>Production-цикл, правки, версии под разные площадки.</p>
-            <div class="meta">
-              <span class="badge">multi-cam</span><span class="badge">fast</span><span class="badge">revisions</span>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- EXPERIENCE -->
-    <section id="experience" class="section">
-      <h2 class="h2">Опыт</h2>
-      <p class="muted">Агентства/продакшн/TV: реклама, имидж, digital, новости и репортаж.</p>
-
-      <div class="split" style="margin-top:12px">
+    <section class="section">
+      <div class="split">
         <div class="card" style="padding:18px">
+          <h2 class="h2">Сильные стороны</h2>
           <div class="list">
             <div class="item">
-              <div class="top">
-                <div>
-                  <b>Фриланс</b>
-                  <div class="muted">Режиссёр монтажа • апр 2025 — настоящее время</div>
-                </div>
-                <span class="badge">full post</span>
-              </div>
-              <ul class="clean">
-                <li>Монтаж рекламных, имиджевых и digital-роликов</li>
-                <li>Цветокоррекция, звук, финализация под платформы</li>
-                <li>Графика/анимация/3D-элементы</li>
-                <li>Работа по ТЗ, правкам и дедлайнам</li>
-              </ul>
+              <div class="top"><b>Монтаж под задачу</b><span class="badge">ad / brand / digital</span></div>
+              <div class="muted">Темп, структура, финализация под платформы и требования.</div>
             </div>
-
             <div class="item">
-              <div class="top">
-                <div>
-                  <b>BLACK (агентство)</b>
-                  <div class="muted">Режиссёр монтажа • июн 2024 — мар 2025 • Москва</div>
-                </div>
-                <span class="badge">agency</span>
-              </div>
-              <ul class="clean">
-                <li>Монтаж рекламного/имиджевого/digital-контента</li>
-                <li>Большой объём правок, быстрый цикл</li>
-                <li>Цвет/звук/титры/инфографика/motion</li>
-                <li>Многокамерный монтаж</li>
-              </ul>
+              <div class="top"><b>Полный цикл поста</b><span class="badge">color / sound / gfx</span></div>
+              <div class="muted">Цвет, звук, титры/инфографика, motion-элементы.</div>
             </div>
-
             <div class="item">
-              <div class="top">
-                <div>
-                  <b>MOON Video Production</b>
-                  <div class="muted">Режиссёр монтажа • авг 2023 — июн 2024</div>
-                </div>
-                <span class="badge">production</span>
-              </div>
-              <ul class="clean">
-                <li>Монтаж рекламных и имиджевых роликов</li>
-                <li>Экспресс-монтаж под сжатые сроки</li>
-                <li>Цвет/звук/графика, финальный результат</li>
-              </ul>
-            </div>
-
-            <div class="item">
-              <div class="top">
-                <div>
-                  <b>МИЦ Известия</b>
-                  <div class="muted">Режиссёр монтажа • ноя 2022 — июл 2023</div>
-                </div>
-                <span class="badge">news</span>
-              </div>
-              <ul class="clean">
-                <li>Новостные и информационные материалы</li>
-                <li>Эфирные дедлайны, техтребования</li>
-                <li>Титры/графика, работа с редакторами</li>
-              </ul>
-            </div>
-
-            <div class="item">
-              <div class="top">
-                <div>
-                  <b>Россия24</b>
-                  <div class="muted">Ассистент режиссёра • сен 2019 — апр 2022</div>
-                </div>
-                <span class="badge">live</span>
-              </div>
-              <ul class="clean">
-                <li>Поддержка выпусков, контроль таймингов</li>
-                <li>Подбор видео/архива, взаимодействие с командами</li>
-                <li>Работа в прямом эфире, высокий темп</li>
-              </ul>
-            </div>
-
-            <div class="item">
-              <div class="top">
-                <div>
-                  <b>Москва24</b>
-                  <div class="muted">Режиссёр монтажа • сен 2017 — май 2019</div>
-                </div>
-                <span class="badge">tv</span>
-              </div>
-              <ul class="clean">
-                <li>Репортажный и информационный контент</li>
-                <li>Многокамерный материал, версии для digital</li>
-                <li>Цвет, титры, графические элементы</li>
-              </ul>
+              <div class="top"><b>Сжатые сроки</b><span class="badge">fast cycle</span></div>
+              <div class="muted">Большие объёмы правок, дедлайны, прозрачная коммуникация.</div>
             </div>
           </div>
         </div>
 
         <div class="card" style="padding:18px">
-          <h3 class="h2">Навыки</h3>
-          <div class="pills">
-            <span class="pill">Видеомонтаж</span>
-            <span class="pill">Цветокоррекция</span>
-            <span class="pill">Звук</span>
-            <span class="pill">Motion design</span>
-            <span class="pill">Инфографика</span>
-            <span class="pill">Многокамерный монтаж</span>
-            <span class="pill">Работа по ТЗ</span>
-            <span class="pill">Эфирные дедлайны</span>
-          </div>
-
-          <div style="height:12px"></div>
-
-          <h3 class="h2">Софт</h3>
+          <h2 class="h2">Инструменты</h2>
           <div class="pills">
             <span class="pill">Adobe Premiere Pro</span>
             <span class="pill">After Effects</span>
@@ -561,126 +132,8 @@
             <span class="pill">Photoshop</span>
             <span class="pill">Dalet Galaxy</span>
           </div>
-
           <div style="height:12px"></div>
-
-          <div class="item">
-            <div class="top"><b>Образование</b><span class="badge">2020</span></div>
-            <div class="muted" style="margin-top:8px">
-              ГИТР им. М.А. Литовчина (Москва) — «Режиссёр телевидения, кино».
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section id="about" class="section">
-      <h2 class="h2">Обо мне</h2>
-      <div class="split" style="margin-top:12px">
-        <div class="card" style="padding:18px">
-          <div class="item" style="margin:0">
-            <div class="muted" style="line-height:1.7">
-              Режиссёр монтажа с опытом в агентствах, продакшене и телевидении.
-              Сильна в структурировании материала, темпе, чистом звуке, графике и финализации.
-              Умею адаптировать ролики под разные платформы и форматы.
-            </div>
-          </div>
-
-          <div class="list" style="margin-top:12px">
-            <div class="item">
-              <div class="top"><b>Как работаю</b><span class="badge">process</span></div>
-              <div class="muted" style="margin-top:8px">
-                ТЗ → черновик → правки → финализация (цвет/звук/графика) → версии под площадки.
-              </div>
-            </div>
-            <div class="item">
-              <div class="top"><b>Фокус</b><span class="badge">taste</span></div>
-              <div class="muted" style="margin-top:8px">
-                Реклама, имидж, клипы, динамичные digital-форматы, где важны ритм и визуальный стиль.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="padding:18px">
-          <h3 class="h2">Что получит заказчик</h3>
-          <div class="list">
-            <div class="item">
-              <div class="top"><b>Быстро и без хаоса</b><span class="badge">fast cycle</span></div>
-              <div class="muted">Опыт эфирных дедлайнов и агентских циклов — сдача вовремя.</div>
-            </div>
-            <div class="item">
-              <div class="top"><b>Креатив в посте</b><span class="badge">collab</span></div>
-              <div class="muted">Участие в креативных решениях на этапе постпродакшна.</div>
-            </div>
-            <div class="item">
-              <div class="top"><b>Техничный финал</b><span class="badge">deliver</span></div>
-              <div class="muted">Экспорт/версии, требования площадок, аккуратная финализация.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="section">
-      <h2 class="h2">Контакты</h2>
-      <p class="muted">Быстрая связь: email + портфолио. Если сайт публичный — телефон лучше заменить на Telegram.</p>
-
-      <div class="split" style="margin-top:12px">
-        <div class="card" style="padding:18px">
-          <h3 class="h2">Связаться</h3>
-
-          <div class="list">
-            <div class="item">
-              <div class="top"><b>Email</b><span class="badge">prefer</span></div>
-              <div class="muted" style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center">
-                <a class="btn" href="mailto:juliakondratuk21@gmail.com">juliakondratuk21@gmail.com</a>
-                <button class="btn" data-copy="juliakondratuk21@gmail.com">Скопировать</button>
-              </div>
-            </div>
-
-            <div class="item">
-              <div class="top"><b>Телефон</b><span class="badge">RU</span></div>
-              <div class="muted" style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center">
-                <a class="btn" href="tel:+79031771568">+7 (903) 177-15-68</a>
-                <button class="btn" data-copy="+79031771568">Скопировать</button>
-              </div>
-            </div>
-
-            <div class="item">
-              <div class="top"><b>Портфолио</b><span class="badge">Yandex Disk</span></div>
-              <div class="muted" style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center">
-                <a class="btn primary" href="https://disk.yandex.ru/d/bKxBhLYBASdtug" target="_blank" rel="noreferrer">Открыть</a>
-                <button class="btn" data-copy="https://disk.yandex.ru/d/bKxBhLYBASdtug">Скопировать ссылку</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="note">Если хочешь — сделаю переключатель “Публичный режим”: скрывать телефон одной галкой.</div>
-        </div>
-
-        <div class="card" style="padding:18px">
-          <h3 class="h2">Сообщение</h3>
-          <form class="form" onsubmit="return false">
-            <div class="field">
-              <label>Имя</label>
-              <input placeholder="Как к вам обращаться" />
-            </div>
-            <div class="field">
-              <label>Компания / проект</label>
-              <input placeholder="Кто вы" />
-            </div>
-            <div class="field" style="grid-column:1/-1">
-              <label>Сообщение</label>
-              <textarea placeholder="Коротко: задача, формат, дедлайн, ссылка на референсы"></textarea>
-            </div>
-            <div style="grid-column:1/-1; display:flex; gap:10px; flex-wrap:wrap; align-items:center">
-              <a class="btn primary" href="mailto:juliakondratuk21@gmail.com?subject=Запрос%20на%20монтаж&body=Здравствуйте!%0A%0AЗадача:%20...%0AФормат:%20...%0AДедлайн:%20...%0AСсылки:%20...%0A">Открыть письмо</a>
-              <span class="note">Форма без бэкенда: кнопка открывает email-шаблон.</span>
-            </div>
-          </form>
+          <a class="btn" href="experience.html">Смотреть опыт →</a>
         </div>
       </div>
     </section>
@@ -688,65 +141,15 @@
     <footer class="footer">
       <div class="row">
         <span>© <span id="y"></span> Кондратюк Юлия</span>
-        <span class="nowrap">
-          <a href="#home">Главная</a> ·
-          <a href="#portfolio">Портфолио</a> ·
-          <a href="#contact">Контакты</a>
+        <span>
+          <a href="portfolio.html">Портфолио</a> ·
+          <a href="experience.html">Опыт</a> ·
+          <a href="contact.html">Контакты</a>
         </span>
       </div>
     </footer>
   </main>
 
-  <script>
-    // blob cursor
-    (function(){
-      const blob = document.querySelector(".blob");
-      if(blob){
-        let x = innerWidth/2, y = innerHeight/2;
-        addEventListener("pointermove", (e)=>{
-          x = e.clientX; y = e.clientY;
-          blob.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
-        }, {passive:true});
-      }
-    })();
-
-    // active menu by section
-    (function(){
-      const links = Array.from(document.querySelectorAll(".menu a[data-link]"));
-      const sections = links.map(a => document.getElementById(a.getAttribute("data-link")));
-      const setActive = (id)=>{
-        links.forEach(a=>{
-          a.classList.toggle("active", a.getAttribute("data-link") === id);
-        });
-      };
-
-      const io = new IntersectionObserver((entries)=>{
-        const visible = entries
-          .filter(e=>e.isIntersecting)
-          .sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
-        if(visible) setActive(visible.target.id);
-      }, { root: null, threshold: [0.2,0.35,0.5,0.65] });
-
-      sections.forEach(s=>s && io.observe(s));
-      setActive("home");
-    })();
-
-    // copy buttons
-    (function(){
-      document.querySelectorAll("[data-copy]").forEach(btn=>{
-        btn.addEventListener("click", async ()=>{
-          const val = btn.getAttribute("data-copy");
-          try{
-            await navigator.clipboard.writeText(val);
-            const old = btn.textContent;
-            btn.textContent = "Скопировано";
-            setTimeout(()=>btn.textContent = old, 900);
-          }catch(e){}
-        });
-      });
-    })();
-
-    document.getElementById("y").textContent = new Date().getFullYear();
-  </script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
