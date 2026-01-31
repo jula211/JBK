@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Контакты — Кондратюк Юлия</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="blob"></div>
+  <div class="grain"></div>
+
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="mark"></span>
+        <span class="text"><b>Кондратюк Юлия</b><span>Video Editor</span></span>
+      </a>
+
+      <nav class="menu">
+        <a href="index.html">Главная</a>
+        <a href="portfolio.html">Портфолио</a>
+        <a href="experience.html">Опыт</a>
+        <a href="about.html">Обо мне</a>
+        <a href="contact.html">Контакты</a>
+      </nav>
+
+      <div class="cta">
+        <a class="btn" href="portfolio.html">Работы</a>
+        <a class="btn primary" href="experience.html">Опыт</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="pagehead">
+      <h1><span class="glitch" data-text="Контакты">Контакты</span></h1>
+      <p>Если сайт публичный — можно скрыть телефон и оставить email + портфолио.</p>
+    </section>
+
+    <section class="section">
+      <div class="split">
+        <div class="card" style="padding:18px">
+          <h2 class="h2">Связаться</h2>
+
+          <div class="list">
+            <div class="item">
+              <div class="top"><b>Email</b><span class="badge">prefer</span></div>
+              <div class="muted" style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+                <a class="btn" href="mailto:juliakondratuk21@gmail.com">juliakondratuk21@gmail.com</a>
+                <button class="btn" data-copy="juliakondratuk21@gmail.com">Скопировать</button>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="top"><b>Телефон</b><span class="badge">RU</span></div>
+              <div class="muted" style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+                <a class="btn" href="tel:+79031771568">+7 (903) 177-15-68</a>
+                <button class="btn" data-copy="+79031771568">Скопировать</button>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="top"><b>Портфолио</b><span class="badge">Yandex Disk</span></div>
+              <div class="muted" style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+                <a class="btn primary" href="https://disk.yandex.ru/d/bKxBhLYBASdtug" target="_blank" rel="noreferrer">Открыть</a>
+                <button class="btn" data-copy="https://disk.yandex.ru/d/bKxBhLYBASdtug">Скопировать ссылку</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="note">Если надо — сделаю “public mode”: на странице скрывается телефон.</div>
+        </div>
+
+        <div class="card" style="padding:18px">
+          <h2 class="h2">Сообщение</h2>
+
+          <form class="form" onsubmit="return false">
+            <div class="field">
+              <label>Имя</label>
+              <input placeholder="Как к вам обращаться" />
+            </div>
+            <div class="field">
+              <label>Компания / проект</label>
+              <input placeholder="Кто вы" />
+            </div>
+            <div class="field" style="grid-column:1/-1">
+              <label>Сообщение</label>
+              <textarea placeholder="Коротко: задача, формат, дедлайн, ссылка на референсы"></textarea>
+            </div>
+
+            <div style="grid-column:1/-1; display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+              <a class="btn primary" href="mailto:juliakondratuk21@gmail.com?subject=Запрос%20на%20монтаж&body=Здравствуйте!%0A%0AЗадача:%20...%0AФормат:%20...%0AДедлайн:%20...%0AСсылки:%20...%0A">Открыть письмо</a>
+              <span class="note">Форма без бэкенда: открывает email-шаблон.</span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="row">
+        <span>© <span id="y"></span> Кондратюк Юлия</span>
+        <span><a href="index.html">Главная</a> · <a href="portfolio.html">Портфолио</a></span>
+      </div>
+    </footer>
+  </main>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
